@@ -1,3 +1,3 @@
-#Kahvikamera on muuttanut!
+Kahvikamera on muuttanut!
 
 http://kattila.cafe
