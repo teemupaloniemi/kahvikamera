@@ -38,7 +38,7 @@ def check_difference():
     error = mse(img1, img2)
 
     print("MSE: ", error)
-    if (error > 5): # Where does this 5 come from?
+    if (error > 5): # Tämä on hattuvakio, jos bugeja niin tämä vahvasti epäiltynä syylliseksi.
         print("MSE yli 5, Kahvin tila muuttunut! Laitetaan uusi kuva.")
         cv2.imwrite('kahvi.jpg', frame)
         sendImageToServer()
