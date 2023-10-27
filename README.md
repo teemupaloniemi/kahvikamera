@@ -1,2 +1,3 @@
-# kahvikamera
-![State of the Kahvi](./kahvi.jpg)
+Kahvikamera on muuttanut!
+
+http://kattila.cafe
