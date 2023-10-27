@@ -6,10 +6,15 @@
 </head>
 <body>
    <div id="kokodiv" align="center">
-    <div id="otsikkoblock"><h1 id="otsikko">Kattilan kahvikamera</h1></div>
-    <p id="aika"></p>
-    <img id="kuva" src="{{ url_for('static', filename='images/kahvi.jpg') }}" alt="Coffee Cam">
-  </div>
+     <div>
+       <h1 id="otsikko">Kattilan kahvikamera</h1>
+       <p id="aika"></p>
+       <img id="kuva" src="{{ url_for('static', filename='images/kahvi.jpg') }}" alt="Coffee Cam">
+     </div>
+     <div>    
+       <a href="https://github.com/teemupaloniemi/kahvikamera">kahvikamera repo</a>
+     </div>
+   </div>
     <script>
         function displayTime() {
             const now = new Date();
