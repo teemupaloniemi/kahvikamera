@@ -10,3 +10,4 @@ TODO:
 - UI dysleksia ystävällisemmäksi
 - Linkkit repoon
 - Kahvin määrän arviointi
+- Server Side Rendering
