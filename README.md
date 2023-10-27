@@ -8,6 +8,6 @@ TODO:
 - Parempi dokumentaatio
 - Paranna kuvan laatu ottamalla keskiarvo
 - UI dysleksia ystävällisemmäksi
-- Linkkit repoon
+- ~~Linkit repoon~~
 - Kahvin määrän arviointi
 - Server Side Rendering
