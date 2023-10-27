@@ -12,3 +12,9 @@ TODO:
 - Kahvin määrän arviointi
 - Server Side Rendering
 - Kameran vieressä olevan lappusen linkissä olevan virheen korjaus
+
+
+Miten kahvikamera toimii:
+
+![toiminta](cafeSystem.png)
+
