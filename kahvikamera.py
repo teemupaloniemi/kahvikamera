@@ -8,32 +8,11 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-def git_commit_push():
-    date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+def scpkuvatoservu():
     try:
-        # Clear out the current Git history
-        subprocess.run(['rm', '-rf', '.git'], check=True)
-
-        # Initialize a new Git repository
-        subprocess.run(['git', 'init'], check=True)
-
-        # Add all files
-        subprocess.run(['git', 'add', '--all'], check=True)
-
-        # Commit with the current date
-        subprocess.run(['git', 'commit', '-m', date_str], check=True)
-
-        # Manually setting the branch name to main
-        subprocess.run(['git', 'branch', '-M', 'main'], check=True)
-
-        # (Re)add your remote - replace with your remote's URL
-        subprocess.run(['git', 'remote', 'add', 'origin', 'git@github.com:teemupaloniemi/kahvikamera.git'], check=True)
-
-        # Force push to overwrite the remote repository
-        subprocess.run(['git', 'push', '-u', '--force', 'origin', 'main'], check=True)
+        subprocess.run(['scp', 'kahvi.jpg','root@172.232.159.94:~/kahvikamera/static/images/'])
     except subprocess.CalledProcessError as e:
-        print(f'An error occurred: {str(e)}')
-
+        print(f'An error occured: {str(e)}')
 
 def mse(img1, img2):
    h, w = img1.shape
@@ -88,7 +67,7 @@ def query_model():
             cv2.drawContours(imgtmp, [contour], -1, (180), thickness=cv2.FILLED)
 
     cv2.imshow("canny", imgtmp)
-    cv2.waitKey(10)
+    cv2.waitKey(2)
     
     error = mse(img1, img2)
 
@@ -96,8 +75,7 @@ def query_model():
     if (error > 5): # Where does this 5 come from?
         print("MSE yli 5, Kahvin tila muuttunut! Laitetaan uusi kuva.")
         cv2.imwrite('kahvi.jpg', frame)
-
-        git_commit_push()  # Call the git function after saving image
+        scpkuvatoservu()
     else: 
         print("Kahvin tila ei muuttunut. ei tehdä mitään.")
     # Return image data in response with appropriate MIME type
@@ -108,7 +86,7 @@ def run_every_minute():
         # Calling Flask route function directly is unusual and may not work in some setups.
         # Depending on the context, a different approach may be necessary.
         query_model()  
-        time.sleep(30)  # wait one minute
+        time.sleep(5)  # wait one minute
 
 if __name__ == '__main__':
 #     app.run(debug=True, port=8000)
