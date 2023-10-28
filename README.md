@@ -16,5 +16,5 @@ TODO:
 
 Miten kahvikamera toimii:
 
-![toiminta](cafeSystem.png)
+![toiminta](images/cafeSystem.png)
 
