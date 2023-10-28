@@ -1,3 +1,6 @@
+'''
+Tämä ajetaan koneessa johon on kytkettynä kamera ja josta kuvat otetaan.
+'''
 import cv2
 import numpy as np
 import subprocess
