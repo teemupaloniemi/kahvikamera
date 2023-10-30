@@ -15,7 +15,7 @@ def sendImageToServer():
 
 def mse(img1, img2):
    h, w = img1.shape
-   diff = cv2.subtract(img2, img1)
+   diff = img1 - img2
    err = np.sum(diff**2)
    mse = err/(float(h*w))
    return mse
