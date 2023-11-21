@@ -1,7 +1,28 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: rgb(156,111,68);
-    color: white;
-}
+
+
+
+
+
+     	body { 
+     		background-color: #000;
+     	}
+     	
+        #otsikko {
+            font-family: 'Christmas Script', monospace;
+            color: #FF0000; 
+        }
+        
+        #aika { 
+        	color: #FF0000;
+        }
+        
+        #repo { 
+        	color: #FF0000;
+        }
+        
+        #kokodiv {
+            border: 10px dotted #FF0000;
+            border-radius: 10px;
+        }
 
 
