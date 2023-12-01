@@ -4,16 +4,16 @@
 
 
      	body { 
-     		background-color: #000;
+     		background-color: #FF0000;
      	}
      	
         #otsikko {
             font-family: 'Christmas Script', monospace;
-            color: #FF0000; 
+            color: #FFFFFF; 
         }
         
         #aika { 
-        	color: #FF0000;
+        	color: #FFFFFF;
         }
         
         #repo { 
@@ -21,7 +21,7 @@
         }
         
         #kokodiv {
-            border: 10px dotted #FF0000;
+            border: 10px dotted #FFFFFF;
             border-radius: 10px;
         }
 
