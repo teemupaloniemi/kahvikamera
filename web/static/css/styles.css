@@ -1,0 +1,22 @@
+body { 
+    background-color: #AE8B6C;
+}
+
+#otsikko {
+    font-family: 'Arial', monospace;
+    color: #482917; 
+}
+
+#aika { 
+    color: #482917;
+}
+
+#kuva {
+    border-radius: 20px;
+    margin: 30px;
+    box-shadow: 10px 10px 20px 3px #91755C, -10px -10px 20px 3px #C4A68D; 
+}
+
+#repo { 
+    color: #FF0000;
+}

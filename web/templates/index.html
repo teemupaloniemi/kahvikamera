@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Coffee cam</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.cdnfonts.com/css/christmas-script" rel="stylesheet">
+     	<style>
+	</style>
+</head>
+<body>
+   <div id="kokodiv" align="center">
+     <div>
+       <h1 id="otsikko">Kattilan kahvikamera</h1>
+       <p id="aika"></p>
+       <img id="kuva" src="{{ url_for('static', filename='images/kahvi.jpg') }}" alt="Coffee Cam">
+     </div>
+
+     <div id="repo">    
+       <a href="https://github.com/teemupaloniemi/kahvikamera">kahvikamera repo</a>
+     </div>
+   </div>
+   <script>
+         function displayTime() {
+            const now = new Date();
+            const options = {
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+              hour12: false 
+            };
+            const timeString = now.toLocaleTimeString(undefined, options);
+            document.getElementById('aika').textContent = "Kahvin tila tarkistettu: " + timeString;
+        }
+
+        // Call the function when the page loads
+        displayTime();
+
+        function updateImage() {
+            const imageUrl = "{{ url_for('static', filename='images/kahvi.jpg') }}";
+            const newImageUrl = imageUrl + "?t=" + new Date().getTime();
+
+            document.getElementById('kuva').src = newImageUrl;
+            displayTime();
+        }
+
+        setInterval(updateImage, 10000);
+    </script>
+</body>
+</html>
+
+
+
+
