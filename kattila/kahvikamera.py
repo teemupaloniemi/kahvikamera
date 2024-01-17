@@ -6,6 +6,7 @@ import time
 from datetime import datetime
 import time
 from enum import IntEnum
+import os
 
 class Loglevel(IntEnum):
     SILENT = 0
@@ -14,27 +15,34 @@ class Loglevel(IntEnum):
     VERBOSE = 3
     DEFAULT = 0
 
-def send_image_to_server(imgPath):
+def send_image_to_server(imgPath, loglevel = Loglevel.DEFAULT):
     try:
-        subprocess.run(['scp', imgPath,'root@kattila.cafe:~/kahvikamera/static/images/'], capture_output=True)
-    except subprocess.CalledProcessError as e:
-        log_error(f'An error occured: {str(e)}')
+        subprocess.run(['scp', imgPath,'root@kattila.cafe:~/kahvikamera/web/static/images/'], capture_output=True).check_returncode()
+    except Exception as e:
+        log_error(f'An error occured 😔: {str(e)}', loglevel)
+
+def whitebalance(img):
+    wb = cv2.xphoto.createSimpleWB()
+    outImg = wb.balanceWhite(img)
+    return outImg
 
 # Whitebalances outgoing image, writes image to 'kahvi.jpg'
 def publication_postprocess(img):
+    timenow = time.strftime('%H:%M:%S')
     
     # Whitebalancing
-    wb = cv2.xphoto.createSimpleWB()
-    outboundImg = wb.balanceWhite(img)
+    img = whitebalance(img)
+    
+    # for dataset (TODO move out)
+    path = "/home/kattila/kahvicam/kahvikamera/kattila/dataset"
+    cv2.imwrite(os.path.join(path, timenow+'kahvi.jpg'), img)
 
     # Add timestamp
     font = cv2.FONT_HERSHEY_SIMPLEX
-    t = time.strftime('%H:%M:%S')
-    outboundImg = cv2.putText(outboundImg, t, (10,460), font, 2, (255,255,255), 5)
+    outboundImg = cv2.putText(outboundImg, timenow, (10,460), font, 2, (255,255,255), 5)
 
     # Lastly write to disk (outgoing file)
     cv2.imwrite('kahvi.jpg', outboundImg)
-
 
 # Mean square error
 def mse(img1, img2, loglevel = Loglevel.DEFAULT):
@@ -45,7 +53,7 @@ def mse(img1, img2, loglevel = Loglevel.DEFAULT):
     ops = 3*h*w
     mse = err/(float(h*w))
     t = time.time() - s
-    log_verbose(ops, t, ops/t*10**12, loglevel)
+    log_verbose(str(ops)+" "+str(t)+" "+str(ops/t*10**12), loglevel)
     return mse
 
 
@@ -95,7 +103,7 @@ def log_error(str, loglevel = Loglevel.DEFAULT):
 
 
 def main():
-    loglevel = Loglevel.SILENT
+    loglevel = Loglevel.VERBOSE
     log_error("testi", loglevel)
     while True:
         try:
@@ -109,12 +117,12 @@ def main():
 
             log(f'MSE: {difference}')
             if (difference > 5):
-                log("MSE yli 5, Kahvin tila muuttunut! Laitetaan uusi kuva.", loglevel)
+                log("MSE yli 5, Kahvin tila muuttunut! Laitetaan uusi kuva. ☕", loglevel)
                 cv2.imwrite('kahvi-local.jpg', newImg)
                 publication_postprocess(newImg)
-                send_image_to_server('kahvi.jpg')
+                send_image_to_server('kahvi.jpg', loglevel)
             else:
-                log("Kahvin tila ei muuttunut. ei tehdä mitään.", loglevel)
+                log("Kahvin tila ei muuttunut. ei tehdä mitään. 🤷", loglevel)
 
         except Exception as ex:
             log_error(ex, loglevel)
