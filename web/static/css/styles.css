@@ -1,22 +1,67 @@
-body { 
-    background-color: #AE8B6C;
+@font-face {
+    font-family: "Noto Serif Regular";
+    src: url(typefaces/NotoSerif-Regular.ttf);
 }
 
-#otsikko {
-    font-family: 'Arial', monospace;
-    color: #482917; 
+@media all {
+    body {
+        font-family: 'Noto Serif Regular', 'Arial', monospace;
+        width: 100%;
+        background-color: #AE8B6C;
+        margin: 0px;
+    }
+
+    #content {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #otsikko {
+        text-align: center;
+        font-weight: 700;
+        font-size: 3em;
+        color: #482917; 
+        margin: 10px;
+    }
+
+    #aika {
+        margin: 10px;
+    }
+
+    #aika, #halukkaat, #sitaatti  { 
+        color: #482917;
+        text-align: center;
+    }
+
+    #kuva {
+        border-radius: 20px;
+        margin: 30px;
+        box-shadow: 10px 10px 20px 3px #91755C, -10px -10px 20px 3px #C4A68D; 
+        max-width: 96vw;
+        margin: 10px;
+    }
+
+    #kahvinappitxt {
+        font-family: 'Noto Serif Regular', 'Arial', monospace;;
+    }
+
+    #painike { 
+        border: outset 5px #482917;
+        background-color: #AE8B6C;
+        color: #482917;
+        font-size: 1.5em;
+        padding: 0.5em;
+        border-radius: 10px;
+        box-shadow: 10px 10px 20px 3px #91755C, -10px -10px 20px 3px #C4A68D; 
+    }
+
+    #repo { 
+        color: #FF0000;
+        text-align: center;
+    }
 }
 
-#aika { 
-    color: #482917;
-}
-
-#kuva {
-    border-radius: 20px;
-    margin: 30px;
-    box-shadow: 10px 10px 20px 3px #91755C, -10px -10px 20px 3px #C4A68D; 
-}
-
-#repo { 
-    color: #FF0000;
+@media all and (max-width: 600px) {
+    
 }

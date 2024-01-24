@@ -1,0 +1,37 @@
+{% extends "index.html" %}
+
+{% block script %}
+<script>
+    function displayTime() {
+      const now = new Date();
+      const options = {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      };
+      const timeString = now.toLocaleTimeString(undefined, options);
+      document.getElementById('aika').textContent = "Kahvin tila tarkistettu: " + timeString;
+    }
+
+    // Call the function when the page loads
+    displayTime();
+
+    function updateImage() {
+      const imageUrl = "{{ url_for('static', filename='images/kahvi.jpg') }}";
+      const newImageUrl = imageUrl + "?t=" + new Date().getTime();
+
+      document.getElementById('kuva').src = newImageUrl;
+      displayTime();
+    }
+
+    // This is for updating the count of submits
+    function updatePage() {
+      location.reload(true);
+    }
+
+    setInterval(updateImage, 10000);
+    setInterval(updatePage, 100000);
+
+</script>
+{% endblock script %}
