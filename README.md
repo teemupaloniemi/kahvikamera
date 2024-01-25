@@ -9,7 +9,7 @@ TODO:
 - ~~UI dysleksia ystävällisemmäksi~~
 - ~~Linkki repoon~~
 - Kahvin määrän arviointi
-- Server Side Rendering
+- ~~Server Side Rendering~~
 - ~~Kameran vieressä olevan lappusen linkissä olevan virheen korjaus~~ (partial fix)
 
 
