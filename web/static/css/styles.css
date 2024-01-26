@@ -4,17 +4,24 @@
 }
 
 @media all {
+
     body {
         font-family: 'Noto Serif Regular', 'Arial', monospace;
         width: 100%;
-        background-color: #AE8B6C;
+        height: 100vh;
+        background-color: #5c3d22;
         margin: 0px;
     }
-
+    
     #content {
-        align-items: center;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         display: flex;
         flex-direction: column;
+        align-items: center;
+        z-index: 1;
     }
 
     #otsikko {

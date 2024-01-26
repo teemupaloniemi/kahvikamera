@@ -1,57 +1,45 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Coffee cam</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
-  </head>
-  <body>
-    <div id="content">
-      <h1 id="otsikko">Kattilan kahvikamera</h1>
-      <p id="aika"></p>
-      <img id="kuva" src="{{ url_for('static', filename='images/kahvi.jpg') }}" alt="Coffee Cam">
-      <form method="post" action="/kahvi">
-        <button id="painike" type="submit" value="Haluan kahvia" name="Submit"><span id="kahvinappitxt">Haluan kahvia</span></button>
-      </form>
-      <p id="halukkaat">{{ halukkaat }}</p>
-      <p id="laskuri">{{ laskuri }}</p> 
-      <div id="repo">
-        <a href="https://github.com/teemupaloniemi/kahvikamera">kahvikamera repo</a>
-      </div>
-    </div>
-    <script>
-    function displayTime() {
-      const now = new Date();
-      const options = {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-      };
-      const timeString = now.toLocaleTimeString(undefined, options);
-      document.getElementById('aika').textContent = "Kahvin tila tarkistettu: " + timeString;
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Coffee cam</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root {
+      --halukkaat: {{ halukkaat }}; 
     }
 
-    // Call the function when the page loads
-    displayTime();
+    #background-coffee {
+      top: 0;
+      z-index: -1;
+      left: 0;
+      width: 100%;
+      height: calc(10 * (10% - var(--halukkaat)));
+      display: flex;
+      background-color: #AE8B6C;
+    }
+  </style>
+</head>
 
+<body>
+  <div id="background-coffee"></div>
+  <div id="content">
+    <h1 id="otsikko">Kattilan kahvikamera</h1>
+    <img id="kuva" src="{{ url_for('static', filename='images/kahvi.jpg') }}" alt="Coffee Cam">
+    <p id="halukkaat">Halukkaat: {{ halukkaat }}</p>
+  </div>
+  <script>
     function updateImage() {
       const imageUrl = "{{ url_for('static', filename='images/kahvi.jpg') }}";
       const newImageUrl = imageUrl + "?t=" + new Date().getTime();
 
       document.getElementById('kuva').src = newImageUrl;
-      displayTime();
+      location.reload()
     }
-
-    // This is for updating the count of submits
-    function updatePage() {
-      location.reload(true);
-    }
-
     setInterval(updateImage, 10000);
-    setInterval(updatePage, 100000);
+  </script>
+</body>
 
-    </script>
-  </body>
 </html>
