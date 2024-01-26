@@ -1,20 +1,19 @@
-Kahvikamera on muuttanut!
+# Kahvikamera
 
-http://kattila.cafe
+https://kattila.cafe
 
 TODO: 
-- Live stream
 - SSH control socket
 - Parempi dokumentaatio
-- Paranna kuvan laatu ottamalla keskiarvo
+- ~~Paranna kuvan laatu ottamalla keskiarvo~~
 - ~~UI dysleksia ystävällisemmäksi~~
 - ~~Linkki repoon~~
 - Kahvin määrän arviointi
-- Server Side Rendering
-- Kameran vieressä olevan lappusen linkissä olevan virheen korjaus
+- ~~Server Side Rendering~~
+- ~~Kameran vieressä olevan lappusen linkissä olevan virheen korjaus~~ (partial fix)
 
 
 Miten kahvikamera toimii:
 
-![toiminta](images/cafeSystem.png)
+![toiminta](kattila/images/cafeSystem.png)
 
