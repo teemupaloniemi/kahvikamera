@@ -6,12 +6,22 @@
   <meta name="viewport" content="width=device-width" />
   <title>Coffee cam</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    :root {
+      --halukkaatlkm: {{ halukkaatlkm }}; 
+    }
+
+    #background-coffee {
+      top: 0;
+      z-index: -1;
+      left: 0;
+      width: 100%;
+      height: calc(10 * (10% - var(--halukkaatlkm)));
+      display: flex;
+      background-color: #AE8B6C;
+    }
+  </style>
 </head>
-<style>
-  body { 
-    background-color: #AE8B6C;
-  }
-</style>
 
 <body>
   <div id="background-coffee"></div>
@@ -19,13 +29,7 @@
     <h1 id="otsikko">Kattilan kahvikamera</h1>
     <p id="aika"></p>
     <img id="kuva" src="{{ url_for('static', filename='images/kahvi.jpg') }}" alt="Coffee Cam">
-    <form method="post" action="/kahvi" id="kahvi-form">
-      <button id="painike" type="submit" value="Haluan kahvia" name="Submit"><span id="kahvinappitxt">Haluan kahvia</span></button>
-    </form>
     <p id="halukkaat">{{ halukkaat }}</p>
-    <div id="repo">
-      <a href="https://github.com/teemupaloniemi/kahvikamera">kahvikamera repo</a>
-    </div>
   </div>
   <script>
 
@@ -58,7 +62,7 @@
     }
 
     setInterval(updateImage, 10000);
-    setInterval(updatePage, 100000);
+    setInterval(updatePage, 10000);
 
     </script>
 </body>
