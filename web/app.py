@@ -29,7 +29,7 @@ def lisaa_uusi_halukas():
 def halukkaatstr():
     halukkaatstr = "Halukkaat"
     halukkaatlkm = len(halukkaat)
-    if   (halukkaatlkm == 3):  halukkaatstr = halukkaatstr + f":{halukkaatlkm}"
+    if   (halukkaatlkm == 3):  halukkaatstr = halukkaatstr + f" :{halukkaatlkm}"
     elif (halukkaatlkm >= HALUKKAATMAX): halukkaatstr = halukkaatstr + f": {halukkaatlkm} (max)"
     else:                      halukkaatstr = halukkaatstr + f": {halukkaatlkm}"
     return halukkaatstr
