@@ -8,7 +8,7 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <style>
-  body { 
+  body {
     background-color: #AE8B6C;
   }
 </style>
@@ -20,11 +20,15 @@
     <p id="aika"></p>
     <img id="kuva" src="{{ url_for('static', filename='images/kahvi.jpg') }}" alt="Coffee Cam">
     <form method="post" action="/kahvi" id="kahvi-form">
-      <button id="painike" type="submit" value="Haluan kahvia" name="Submit"><span id="kahvinappitxt">Haluan kahvia</span></button>
+      <button id="painike" type="submit" value="Haluan kahvia" name="Submit"><span id="kahvinappitxt">Haluan
+          kahvia</span></button>
     </form>
     <p id="halukkaat">{{ halukkaat }}</p>
     <div id="repo">
       <a href="https://github.com/teemupaloniemi/kahvikamera">kahvikamera repo</a>
+    </div>
+    <div id="display">
+      <a href="https://kattila.cafe/display">Display Only</button>
     </div>
   </div>
   <script>
@@ -60,7 +64,7 @@
     setInterval(updateImage, 10000);
     setInterval(updatePage, 100000);
 
-    </script>
+  </script>
 </body>
 
 </html>

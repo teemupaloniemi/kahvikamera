@@ -63,6 +63,16 @@
         box-shadow: 10px 10px 20px 3px #91755C, -10px -10px 20px 3px #C4A68D; 
     }
 
+    #display { 
+        border: outset 5px #482917;
+        background-color: #AE8B6C;
+        color: #482917;
+        margin-top: 1em; 
+        font-size: 0.7em;
+        padding: 0.5em;
+        border-radius: 10px;
+    }
+
     #repo { 
         color: #FF0000;
         text-align: center;
