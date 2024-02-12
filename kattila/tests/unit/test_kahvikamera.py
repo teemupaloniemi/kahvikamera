@@ -3,7 +3,7 @@ import cv2
 import os
 import kahvikamera
 
-class TestImageDifference(unittest.TestCase):
+class TestKahvikameraMSE(unittest.TestCase):
 
     def test_mse_eroavatkuvat_eroavat(self):
         # Setup
