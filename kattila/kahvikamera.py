@@ -6,24 +6,18 @@ import time
 from datetime import datetime
 from enum import IntEnum
 import os
+import logging
 import copy
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import kamera
+from typing import Any
 
-
-class Loglevel(IntEnum):
-    SILENT = 0
-    ERROR = 1
-    LOG = 2
-    VERBOSE = 3
-    DEFAULT = 0
-
-def send_image_to_server(imgPath, loglevel = Loglevel.DEFAULT):
+def send_image_to_server(imgPath, log: logging.Logger):
     try:
         subprocess.run(['scp', imgPath,'root@kattila.cafe:~/kahvikamera/web/static/images/'], capture_output=True).check_returncode()
     except Exception as e:
-        log_error(f'An error occured 😔: {str(e)}', loglevel)
+        log.error(f'An error occured 😔: {str(e)}')
 
 def whitebalance(img):
     wb = cv2.xphoto.createSimpleWB()
@@ -50,7 +44,7 @@ def publication_postprocess(img, gatherdataset = False):
     cv2.imwrite('kahvi.jpg', img)
 
 # Mean square error
-def mse(img1, img2, loglevel = Loglevel.DEFAULT):
+def mse(img1, img2, log: logging.Logger):
     s = time.time()
     h, w = img1.shape
     diff = img1 - img2
@@ -58,25 +52,31 @@ def mse(img1, img2, loglevel = Loglevel.DEFAULT):
     ops = 3*h*w
     mse = err/(float(h*w))
     t = time.time() - s
-    log_verbose(f"{ops} {t} {ops/t*10**12}", loglevel)
+    log.debug(f"{ops} {t} {ops/t*10**12}")
     return mse
 
 
-def capture_camera_v4l2(kamera: kamera.Kamera) -> int:
-    kamera.capture()
+#def capture_camera_v4l2(kamera: kamera.Kamera) -> int:
+#    kamera.capture()
 
 
-def capture_camera_cv2():
+def capture_camera_cv2(log: logging.Logger, deviceIndex = 0) -> Any:
     # TODO capture longer exposed image for less noise (all my homies hate noise)
     # Ehdotettu yhdistää useamman capturen keskiarvo joka kyllä denoisee sen
+    ret = False
     try:
-        cap = cv2.VideoCapture(0)
-
-        if not cap.isOpened():
-            raise IOError("Cannot open webcam")
-
-        ret, capImg = cap.read()
-
+        for i in range(9):
+            try:
+                cap = cv2.VideoCapture(i)
+                if cap is None or not cap.isOpened():
+                    print("Camera not in", i, "trying", i+1, "next")
+                    continue
+                ret, capImg = cap.read()
+                log.debug(f"Captured image shape: {capImg.shape}")
+                break
+            except Exception as ex:
+                print(ex)
+        
     finally:
         cap.release()
 
@@ -94,21 +94,6 @@ def cv_preprocess(raw):
 def preprocess_capture(img):
     cv2.xphoto.dctDenoising(img, img, 8.0)
     return img
-
-def log_verbose(str, loglevel = Loglevel.DEFAULT):
-    if (loglevel >= Loglevel.VERBOSE):
-        t = time.strftime('%H:%M:%S')
-        print(f'LOG | {t:8} | {str}')
-
-def log(str, loglevel = Loglevel.DEFAULT):
-    if (loglevel >= Loglevel.LOG):
-        t = time.strftime('%H:%M:%S')
-        print(f'LOG | {t:8} | {str}')
-
-def log_error(str, loglevel = Loglevel.DEFAULT):
-    if (loglevel >= Loglevel.ERROR):
-        t = time.strftime('%H:%M:%S')
-        print(f'\033[1;31;40mERROR\033[1;37;40m | {t:8} | {str}')
 
 def detectEdges(org):
     image = copy.deepcopy(org)
@@ -141,9 +126,8 @@ def check_amount(img):
             # return int(min((max(0, 5-(points_of_difference) )), 5)), avg
         return 5, avg
 
-def main():
-    loglevel = Loglevel.VERBOSE
-    # log_error("testi", loglevel)
+def main(log: logging.Logger):
+    log.info("Kahvikamera käynnistyy")
     # cam = kamera.Kamera()
     #avgs = []
     #rets = []
@@ -156,19 +140,19 @@ def main():
         try:
             timenow = time.localtime()
             if timenow.tm_hour > 20 or timenow.tm_hour < 7:
-                print("Kahvikamera is sleeping")
+                print("Kahvikamera is sleeping 😴")
                 time.sleep(600)
                 return
             # cam.capture('testi-kahvi.jpg')
             # testImg = cv2.imread('testi-kahvi.jpg')
             # cv2.imshow(testImg)
-            newImg = preprocess_capture(capture_camera_cv2())
+            newImg = preprocess_capture(capture_camera_cv2(log))
             oldImg = retrieve_old_img("kahvi-local.jpg")
 
             cvNew = cv_preprocess(newImg)
             cvOld = cv_preprocess(oldImg)
 
-            difference = mse(cvNew, cvOld)
+            difference = mse(cvNew, cvOld, log)
             #edgeImg = detectEdges(newImg)
             #ax.clear()
             #ax2.clear()
@@ -196,21 +180,21 @@ def main():
             #ax.plot(avgs, color='green', label='Kirkkaus')
             #ax2.plot(rets, color='blue', label='Kahvi')
             
-            #log(f"Amount of coffee: {ret} / 5, avg: {avg}", loglevel) 
-            log(f'MSE: {difference}')
+            #log.info(f"Amount of coffee: {ret} / 5, avg: {avg}") 
+            log.info(f'MSE: {difference}')
             if (difference > 5):
-                log("MSE yli 5, Kahvin tila muuttunut! Laitetaan uusi kuva. ☕", loglevel)
+                log.info("MSE yli 5, Kahvin tila muuttunut! Laitetaan uusi kuva. ☕")
                 cv2.imwrite('kahvi-local.jpg', newImg)
                 publication_postprocess(newImg)
-                send_image_to_server('kahvi.jpg', loglevel)
+                send_image_to_server('kahvi.jpg', log)
             else:
-                log("Kahvin tila ei muuttunut. ei tehdä mitään. 🤷", loglevel)
+                log.info("Kahvin tila ei muuttunut. ei tehdä mitään. 🤷")
 
         except Exception as ex:
-            log_error(ex, loglevel)
+            log.error(ex)
 
         finally:
-            time.sleep(2)
+            time.sleep(5)
 
     while 1:
         animate()
@@ -218,4 +202,9 @@ def main():
     #plt.show()
 
 if __name__ == '__main__':
-    main()
+    try:
+        logging.basicConfig(filename='kahvikamera.log', encoding='utf-8', level=logging.DEBUG)
+        log = logging.getLogger("kahvikamera")
+        main(log)
+    finally:
+        log.info("Kahvikamera sulkeutuu")
