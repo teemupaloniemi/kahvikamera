@@ -62,6 +62,10 @@ def toinen_kissa():
     halukkaats = halukkaatstr() 
     return render_template('display.html', halukkaat=halukkaats, halukkaatlkm=str(len(halukkaat))+"%")
 
+@app.route('/tietoa')
+def tietoa():
+    return render_template('tietoa.html')
+
 def main():
     app.run(host='127.0.0.1', port=5000, debug=True)
 

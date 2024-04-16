@@ -14,7 +14,7 @@
     }
     
     #content {
-        position: fixed;
+        position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
@@ -71,6 +71,11 @@
         font-size: 0.7em;
         padding: 0.5em;
         border-radius: 10px;
+    }
+
+    #otsikko, #aika, #halukkaat {
+        background-color: #AE8B6C;
+        box-shadow: 0px 0px 3px 3px #AE8B6C;
     }
 
     #repo { 
